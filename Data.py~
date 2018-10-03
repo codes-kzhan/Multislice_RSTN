@@ -69,7 +69,7 @@ class DataLayer(data.Dataset):
 		last_valid = self.index1
 		for i in range(int(self.slice_thickness / 2)):
 			index_tmp = self.index1 + i + 1
-			if self.index1 == self.slices - 1:
+			if index1 == self.slices - 1:
 				index_tmp = self.index1
 			if self.slice_ID[index_tmp] != self.slice_ID[self.index1] + i + 1:
 				index_tmp = last_valid
@@ -81,7 +81,7 @@ class DataLayer(data.Dataset):
 		last_valid = self.index1
 		for i in range(int(self.slice_thickness) - int(self.slice_thickness/2) - 1):
 			index_tmp = self.index1 - i - 1
-			if self.index1 == 0:
+			if index1 == 0:
 				index_tmp = self.index1
 			if self.slice_ID[index_tmp] != self.slice_ID[self.index1] - i - 1:
 				index_tmp = last_valid

@@ -45,7 +45,7 @@ while volume_list[len(volume_list) - 1] == '':
 print('Looking for snapshots:')
 fine_snapshot_ = {}
 fine_snapshot_name_ = {}
-for plane in ['X', 'Y', 'Z']:
+for plane in ['Z']:
 	fine_snapshot_name = snapshot_name_from_timestamp(fine_snapshot_path, \
 		current_fold, plane, 'J', slice_thickness, organ_ID, timestamp[plane])
 	if fine_snapshot_name == '':
@@ -63,7 +63,7 @@ for plane in ['X', 'Y', 'Z']:
 print('In the coarse stage:')
 coarse_result_name_ = {}
 coarse_result_directory_ = {}
-for plane in ['X', 'Y', 'Z']:
+for plane in ['Z']:
 	coarse_result_name__ = result_name_from_timestamp(coarse_result_path, current_fold, \
 		plane, 'J', slice_thickness, organ_ID, volume_list, timestamp[plane])
 	if coarse_result_name__ == '':
@@ -77,8 +77,8 @@ for plane in ['X', 'Y', 'Z']:
 	coarse_result_directory_[plane] = coarse_result_directory__
 
 coarse2fine_result_name = 'FD' + str(current_fold) + ':' + \
-	fine_snapshot_name_['X'] + ',' + \
-	fine_snapshot_name_['Y'] + ',' + \
+	fine_snapshot_name_['Z'] + ',' + \
+	fine_snapshot_name_['Z'] + ',' + \
 	fine_snapshot_name_['Z'] + ':' + \
 	epoch + '_' + str(coarse_threshold) + '_' + \
 	str(fine_threshold) + ',' + str(max_rounds)
@@ -98,7 +98,7 @@ if finished_all:
 
 os.environ["CUDA_VISIBLE_DEVICES"]= str(GPU_ID)
 net_ = {}
-for plane in ['X', 'Y', 'Z']:
+for plane in ['Z']:
 	net_[plane] = []
 	for t in range(len(epoch_list)):
 		net = RSTN(crop_margin=crop_margin, TEST='F').cuda()
@@ -159,13 +159,13 @@ for i in range(len(volume_list)):
 		if not finished:
 			if r == 0:  # coarse majority voting
 				pred_ = np.zeros(label.shape, dtype = np.float32)
-				for plane in ['X', 'Y', 'Z']:
+				for plane in ['Z']:
 					for t in range(len(epoch_list)):
 						volume_file_ = volume_filename_testing( \
 							coarse_result_directory_[plane], epoch_list[t], i)
 						volume_data = np.load(volume_file_)
 						pred_ += volume_data['volume']
-				pred_ /= (255 * len(epoch_list) * 3)
+				pred_ /= (255 * len(epoch_list))
 				print('    Fusion is finished: ' + \
 					str(time.time() - start_time) + ' second(s) elapsed.')
 			else:
@@ -181,7 +181,7 @@ for i in range(len(volume_list)):
 				maskY = mask.transpose(1, 0, 2).copy()
 				maskZ = mask.transpose(2, 0, 1).copy()
 				pred_ = np.zeros(label.shape, dtype = np.float32)
-				for plane in ['X', 'Y', 'Z']:
+				for plane in ['Z']:
 					for t in range(len(epoch_list)):
 						net = net_[plane][t]
 						minR = 0
@@ -284,7 +284,7 @@ for i in range(len(volume_list)):
 							pred_ += pred__.transpose(1, 0, 2)
 						elif plane == 'Z':
 							pred_ += pred__.transpose(1, 2, 0)
-				pred_ /= (len(epoch_list) * 3)
+				pred_ /= (len(epoch_list))
 				print('    Testing is finished: ' + \
 					str(time.time() - start_time) + ' second(s) elapsed.')
 

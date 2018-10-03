@@ -19,7 +19,6 @@ CURRENT_ORGAN_ID=1
 CURRENT_PLANE=Z
 CURRENT_FOLD=0
 CURRENT_GPU=1
-#CURRENT_GPU=$CURRENT_FOLD
 
 ####################################################################################################
 # turn on these switches to execute each module
@@ -126,7 +125,7 @@ then
 	then
 		TRAINING_MODELNAME=Z${SLICE_THICKNESS}_${TRAINING_ORGAN_ID}
 		TRAINING_LOG=${DATA_PATH}logs/FD${CURRENT_FOLD}:${TRAINING_MODELNAME}_${TRAINING_TIMESTAMP}.txt
-		python training.py \
+		python training_parallel.py \
 			$DATA_PATH $CURRENT_FOLD $ORGAN_NUMBER $LOW_RANGE $HIGH_RANGE \
 			$SLICE_THRESHOLD $SLICE_THICKNESS \
 			$TRAINING_ORGAN_ID Z $TRAINING_GPU \
@@ -336,7 +335,7 @@ MAX_ROUNDS=10
 #     timestamp2_X (optional), timestamp2_Y (optional), timestamp2_Z (optional)
 if [ "$ENABLE_COARSE2FINE_TESTING" = "1" ]
 then
-	python coarse2fine_testing.py \
+	python coarse2fine_testing_On_Z.py \
 		$DATA_PATH $CURRENT_FOLD $ORGAN_NUMBER $LOW_RANGE $HIGH_RANGE \
 		$SLICE_THRESHOLD $SLICE_THICKNESS $COARSE2FINE_TESTING_ORGAN_ID $COARSE2FINE_TESTING_GPU \
 		$LEARNING_RATE1 $LEARNING_RATE_M1 $LEARNING_RATE2 $LEARNING_RATE_M2 $TRAINING_MARGIN \

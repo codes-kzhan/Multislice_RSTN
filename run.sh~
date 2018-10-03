@@ -16,10 +16,9 @@
 ####################################################################################################
 # variables for convenience
 CURRENT_ORGAN_ID=1
-CURRENT_PLANE=Z
+CURRENT_PLANE=A
 CURRENT_FOLD=0
-CURRENT_GPU=1
-#CURRENT_GPU=$CURRENT_FOLD
+CURRENT_GPU=$CURRENT_FOLD
 
 ####################################################################################################
 # turn on these switches to execute each module
@@ -29,7 +28,7 @@ ENABLE_COARSE_TESTING=0
 ENABLE_COARSE_FUSION=0
 ENABLE_ORACLE_TESTING=0
 ENABLE_ORACLE_FUSION=0
-ENABLE_COARSE2FINE_TESTING=1
+ENABLE_COARSE2FINE_TESTING=0
 # training settings: X|Y|Z
 TRAINING_ORGAN_ID=$CURRENT_ORGAN_ID
 TRAINING_PLANE=$CURRENT_PLANE
@@ -52,7 +51,7 @@ COARSE2FINE_TESTING_GPU=$CURRENT_GPU
 
 ####################################################################################################
 # defining the root path which stores image and label data
-DATA_PATH='/media/Med_6T1/data2/'
+DATA_PATH='/mnt/data0/tianwei/NIH/'
 
 ####################################################################################################
 # data initialization: only needs to be run once
@@ -72,7 +71,7 @@ fi
 # the individual and joint training processes
 # variables
 SLICE_THRESHOLD=0.98
-SLICE_THICKNESS=4
+SLICE_THICKNESS=3
 LEARNING_RATE1=1e-5
 LEARNING_RATE2=1e-5
 LEARNING_RATE_M1=10
